@@ -4,16 +4,58 @@
        <title>ISEM-551 Assignment 1</title>
    </head>
    <body>
-
+<div id="header"> 
+    ISEM-551 Assignment 1 - Question of the day :)
+        
+</div>
+<div class = "question">
        <h1>1. What does H20 stand for?</h1>
        <input type="radio" name="answer" value="A"/> A. Milk <br/>
        <input type="radio" name="answer" value="B"/> B. Water <br/>
        <input type="radio" name="answer" value="C"/> C. Apple Juice <br/>
        <input type="radio" name="answer" value="D"/> D. Beer <br/>
-       
-       <input type="button" value="Check Answer" id="btnCheckAnswer"/>
-     
-       
+       <br/>
+       <input type="button" value="Check Answer" id="btnCheckAnswer" onclick="checkResult()"/>
+</div>
+     <style>
+         .question{
+             margin: auto;
+             width: 30%;
+             
+         }
+         #header{
+             background-color: cornflowerblue;
+             color: floralwhite;
+             padding: 9px;
+             border: 1px solid black;
+             font-size: 24px;
+         }
+         body{
+             background-color: pink
+         }
+         
+         </style>
+     <script>
+         function checkResult(){
+             var radios = document.getElementsByName("answer");
+             var userAnswer = "";
+             for (var i=0, length=radios.length; i<length; i++){
+                 if(radios[i].checked){
+                     userAnswer = radios[i].value;
+                     break;
+                 }
+                 
+             }
+             var message = "";
+             if(userAnswer == "B"){
+                 message = "Congratulations! your answer is correct."
+             } 
+             else {
+                 message = "Sorry your answer is not correct."
+             }
+             alert(message);
+         }
+     </script>   
        
    </body>
 </html>
