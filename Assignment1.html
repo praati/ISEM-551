@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="MyApp">
    <head>
        <title>ISEM-551 Assignment 2</title>
        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+       <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
    </head>
-   <body>
+   <body ng-controller="MyController">
    <nav class="navbar navbar-default">
        <div class="container-fluid">
            <div class="navbar-header">
@@ -14,8 +15,8 @@
            </div>
            <div class="collapse navbar-collapse">
                <ul class="nav navbar-nav">
-                   <li><a class="btn">Home</a></li>
-                   <li><a class="btn">About</a></li>
+                   <li><a class="btn" ng-click="navigate(true)" >Home</a></li>
+                   <li><a class="btn" ng-click="navigate(false)">About</a></li>
                </ul>
            </div>
        </div>
@@ -24,24 +25,22 @@
        <div class="row">
            <div class="col-md-3"></div>
            <div class="col-md-6">
-               <div class="jumbotron">
-               <h2>1. What does H<sub>2</sub>O stand for?</h2>
+               <div ng-show="home" class="jumbotron">
+                   <h2>{{question.q}}</h2>
                    <div class="text-info">
-                       <div class="radio">
-                           <label> <input type="radio" name="answer" value="A"/> A. Milk</label>
-                       </div>
-                       <div class="radio">
-                           <label> <input type="radio" name="answer" value="B"/> B. Water</label>
-                       </div>
-                       <div class="radio">
-                           <label> <input type="radio" name="answer" value="C"/> C. Apple Juice</label>
-                       </div>
-                       <div class="radio">
-                           <label>  <input type="radio" name="answer" value="D"/> D. Beer </label>
+                       <div class="radio" ng-repeat="option in options">
+                           <label> <input type="radio" name="answer" ng-model="$parent.selectedAns" value="{{option}}"/> {{option}}</label>
                        </div>
 
-               <button type="button" class="btn btn-success">Check Answer</button>
-           </div></div>
+
+               <button type="button" class="btn btn-success"ng-click="checkAns()">Check Answer</button>
+                       <p>{{result}}</p>
+                   </div></div>
+               <div ng-hide="home"class="jumbotron">
+                   <h2>About</h2>
+                   <p>Check your general knowledge on this website solving our questions of the day. Good luck</p>
+                   <p class="text-info"><small>submitted by Pratiksha Yadav ( student ID : 100323)</small></p>
+               </div>
                
            <div class="col-md-3"></div>
        </div>
@@ -49,25 +48,33 @@
        </div>
 </div>
      <script>
-         function checkResult(){
-             var radios = document.getElementsByName("answer");
-             var userAnswer = "";
-             for (var i=0, length=radios.length; i<length; i++){
-                 if(radios[i].checked){
-                     userAnswer = radios[i].value;
-                     break;
+         var myApp = angular.module("MyApp",[]);
+         myApp.controller("MyController", function($scope){
+             $scope.question = {'q':"1. What does H2O stand for?", 'a':"Water"};
+             $scope.options =["Milk", "Water", "Apple Juice", "Beer"];
+             $scope.selectedAns = "";
+             $scope.checkAns = function(){
+                 var selectedAns = $scope.selectedAns;
+                 var correctAns = $scope.question.a;
+                 if(selectedAns == ""){
+                     $scope.result = "Please select an answer";
                  }
-                 
+                 else if(selectedAns == correctAns){
+                     $scope.result = "Congratulations! " + selectedAns + " is the correct answer!";
+                 }
+                 else{
+                     $scope.result = "Sorry! " + selectedAns + " is wrong answer, please try again";
+                 }
              }
-             var message = "";
-             if(userAnswer == "B"){
-                 message = "Congratulations! your answer is correct."
-             } 
-             else {
-                 message = "Sorry your answer is not correct."
-             }
-             alert(message);
-         }
+
+             $scope.home=true;
+
+             $scope.navigate = function(showHome){
+                 $scope.home=showHome;
+             };
+         });
+
+
      </script>   
        
    </body>
